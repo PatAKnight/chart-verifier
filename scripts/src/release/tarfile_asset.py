@@ -1,6 +1,7 @@
 import argparse
 import os
 import tarfile
+from githubcommon import github_common
 
 
 tar_content_files = [ {"name": "out/chart-verifier", "arc_name": "chart-verifier"} ]
@@ -9,7 +10,7 @@ tar_content_files = [ {"name": "out/chart-verifier", "arc_name": "chart-verifier
 def create(release):
 
     tgz_name = f"chart-verifier-{release}.tgz"
-    print(f'::set-output name=tarball_base_name::{tgz_name}')
+    github_common.add_output("tarball_base_name",{tgz_name})
 
     if os.path.exists(tgz_name):
         os.remove(tgz_name)
@@ -29,5 +30,5 @@ def main():
     args = parser.parse_args()
     tarfile = create(args.release)
     print(f'[INFO] Verifier tarball created : {tarfile}.')
-    print(f'::set-output name=tarball_full_name::{tarfile}')
+    github_common.add_output("tarball_full_name",{tarfile})
 
